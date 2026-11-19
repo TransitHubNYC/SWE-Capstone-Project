@@ -1,9 +1,10 @@
 import uuid
 from datetime import timedelta
 
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes  # type: ignore[import-untyped]
+from rest_framework.permissions import IsAuthenticated  # type: ignore[import-untyped]
+from rest_framework.response import Response  # type: ignore[import-untyped]
+from . import llm
 
 from database import queries
 from database.db import get_db
@@ -122,3 +123,22 @@ def admin_create_alert(request):
         "source": "admin", "updated_at": t,
     })
     return Response({"ok": True}, status=201)
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def chatbot(request):
+    """POST /api/chatbot/  {message, history}  - ask the assistant how the app works."""
+    raw = request.data.get("history")
+    raw = raw if isinstance(raw, list) else []
+    history = [{"role": m["role"], "content": m["content"]} for m in raw
+               if isinstance(m, dict) and m.get("role") in ("user", "assistant")
+               and isinstance(m.get("content"), str)][-10:]
+    while history and history[0]["role"] == "assistant":
+        history.pop(0)  # the conversation must start with a user message
+    try:
+        reply = llm.chat(request.data.get("message") or "", history)
+    except ValueError as e:
+        return Response({"error": str(e)}, status=400)
+    except Exception:
+        return Response({"error": "The assistant is unavailable right now."}, status=502)
+    return Response({"reply": reply})
