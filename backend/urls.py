@@ -42,4 +42,5 @@ urlpatterns = [
     path('api/admin/summary/', api_more.admin_summary, name='api-admin-summary'),
     path('api/admin/reports/', api_more.admin_reports, name='api-admin-reports'),
     path('api/admin/alerts/', api_more.admin_create_alert, name='api-admin-create-alert'),
+    path('api/chatbot/', api_more.chatbot, name='api-chatbot'),
 ]
