@@ -10,3 +10,9 @@ export const colors = {
   okBg: '#e1f3e4',
   okText: '#1d5e2b',
 };
+
+// Accessibility colors feature
+export const accessibilityColors = {
+  textScale: 1.0,
+  highContrast: false,
+};
