@@ -1,41 +1,129 @@
-import { useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { api } from '../api';
-import { Button, Field, Header, LinkText, Notice } from '../ui';
+import * as React from "react";
+import {Text, StyleSheet, View, Pressable, Image} from "react-native";
 
-export default function SignUp({ go }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
-  const [error, setError] = useState('');
-  const [busy, setBusy] = useState(false);
+const SignUp = () => {
+  	
+  	return (
+    		<View style={styles.signUp}>
+      			<View style={styles.content}>
+        				<View style={styles.fullNameField}>
+          					<Text style={[styles.fullName, styles.signUp2Typo]}>Full name</Text>
+          					<View style={[styles.input, styles.inputBorder]}>
+            						<Text style={[styles.janeRider, styles.signUp2Typo]}>Jane Rider</Text>
+          					</View>
+        				</View>
+        				<View style={styles.fullNameField}>
+          					<Text style={[styles.fullName, styles.signUp2Typo]}>Email</Text>
+          					<View style={[styles.input, styles.inputBorder]}>
+            						<Text style={[styles.janeRider, styles.signUp2Typo]}>name@example.com</Text>
+          					</View>
+        				</View>
+        				<View style={styles.fullNameField}>
+          					<Text style={[styles.fullName, styles.signUp2Typo]}>Password</Text>
+          					<View style={[styles.input, styles.inputBorder]}>
+            						<Text style={[styles.janeRider, styles.signUp2Typo]}>At least 8 characters</Text>
+          					</View>
+        				</View>
+        				<View style={styles.fullNameField}>
+          					<Text style={[styles.fullName, styles.signUp2Typo]}>Confirm password</Text>
+          					<View style={[styles.input, styles.inputBorder]}>
+            						<Text style={[styles.janeRider, styles.signUp2Typo]}>Re-enter password</Text>
+          					</View>
+        				</View>
+        				<Pressable style={[styles.signUpButton, styles.inputBorder]} onPress={()=>{}}>
+          					<Text style={[styles.signUp2, styles.signUp2Typo]}>Sign Up</Text>
+        				</Pressable>
+        				<Pressable onPress={()=>{}}>
+          					<Text style={styles.text}>
+            						<Text style={styles.alreadyHaveAn}>{`Already have an account? `}</Text>
+            						<Text style={styles.logIn}>Log in</Text>
+          					</Text>
+        				</Pressable>
+      			</View>
+      			<Image style={styles.image10Icon} resizeMode="cover" />
+    		</View>);
+};
 
-  async function submit() {
-    setError('');
-    setBusy(true);
-    try {
-      await api('/api/signup/', { method: 'POST', body: { name, email, password, confirm } });
-      go('welcome', 'Account created! Tap Log In to continue.');
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setBusy(false);
-    }
-  }
+const styles = StyleSheet.create({
+  	signUp2Typo: {
+    		textAlign: "left",
+    		fontFamily: "Inter-Regular"
+  	},
+  	inputBorder: {
+    		alignItems: "center",
+    		flexDirection: "row",
+    		borderWidth: 1,
+    		borderColor: "#031f38",
+    		borderStyle: "solid",
+    		borderRadius: 2,
+    		alignSelf: "stretch",
+    		overflow: "hidden"
+  	},
+  	signUp: {
+    		height: 874,
+    		backgroundColor: "#cbeaf3",
+    		width: "100%",
+    		overflow: "hidden"
+  	},
+  	content: {
+    		top: 127,
+    		left: 14,
+    		gap: 18,
+    		alignItems: "flex-start",
+    		width: 374,
+    		position: "absolute",
+    		overflow: "hidden"
+  	},
+  	fullNameField: {
+    		gap: 6,
+    		alignSelf: "stretch",
+    		alignItems: "flex-start",
+    		overflow: "hidden"
+  	},
+  	fullName: {
+    		alignSelf: "flex-start",
+    		fontSize: 16,
+    		color: "#2c4262"
+  	},
+  	input: {
+    		backgroundColor: "#fff",
+    		paddingHorizontal: 14,
+    		paddingVertical: 12
+  	},
+  	janeRider: {
+    		fontSize: 20,
+    		color: "rgba(44, 66, 98, 0.55)"
+  	},
+  	signUpButton: {
+    		backgroundColor: "#2c4262",
+    		justifyContent: "center",
+    		paddingHorizontal: 0,
+    		paddingVertical: 15
+  	},
+  	signUp2: {
+    		fontSize: 24,
+    		color: "#fff"
+  	},
+  	text: {
+    		fontSize: 18,
+    		textAlign: "center",
+    		color: "#2c4262",
+    		width: 374
+  	},
+  	alreadyHaveAn: {
+    		fontFamily: "Inter-Regular"
+  	},
+  	logIn: {
+    		fontWeight: "800",
+    		fontFamily: "Inter-ExtraBold"
+  	},
+  	image10Icon: {
+    		top: 665,
+    		left: 116,
+    		width: 170,
+    		height: 170,
+    		position: "absolute"
+  	}
+});
 
-  return (
-    <ScrollView>
-      <Header title="Create Account" />
-      <View style={{ padding: 14, paddingTop: 30 }}>
-        {error ? <Notice kind="error">{error}</Notice> : null}
-        <Field label="Full name" placeholder="Jane Rider" autoCapitalize="words" value={name} onChangeText={setName} />
-        <Field label="Email" placeholder="name@example.com" keyboardType="email-address" value={email} onChangeText={setEmail} />
-        <Field label="Password" placeholder="At least 10 characters" secureTextEntry value={password} onChangeText={setPassword} />
-        <Field label="Confirm password" placeholder="Re-enter password" secureTextEntry value={confirm} onChangeText={setConfirm} />
-        <Button title={busy ? 'Creating...' : 'Sign Up'} wide disabled={busy} onPress={submit} />
-        <LinkText onPress={() => go('login')}>Already have an account? Log in</LinkText>
-      </View>
-    </ScrollView>
-  );
-}
+export default SignUp;
