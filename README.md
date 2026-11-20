@@ -274,3 +274,37 @@ We are adding a weather API integration so the app can show current conditions a
 4. **YAML indentation error.** While editing the AI-provided file, the `test:` job ended up indented by 3 spaces instead of 2. GitHub could no longer parse the workflow: runs failed instantly with no job output and showed the file path instead of the "CI/CD Pipeline" name. We compared the file against the run where all stages had passed, found the extra space, and fixed it.
 
 **What we found that the AI's first pass missed:** two leftover template workflows (`django.yml` and `python-app.yml`) were running alongside ours. One started failing after we moved `SECRET_KEY` to an environment variable. We noticed runs with unfamiliar names ("Django CI") in the Actions tab and deleted both files, leaving `ci.yml` as the single pipeline.
+
+
+## LLM Feature: App Assistant Chatbot
+
+An in-app assistant that answers user questions about how TransitHubNYC works
+(for example, where to find alerts, how to view past trips, or how to report a
+problem). It uses the Claude API from the Django backend.
+
+### How it works
+- **Endpoint:** `POST /api/chatbot/` (login required)
+- **Request:** `{"message": "How do I report a problem?", "history": []}`
+  (`history` is optional: earlier `{"role", "content"}` turns, last 10 used)
+- **Response:** `{"reply": "..."}`
+- **Code:** `backend/app/llm.py` (the API call) and `backend/app/api_more.py` (the endpoint)
+- **Guardrails:** messages are limited to 1,000 characters, replies to 400 tokens,
+  and the assistant is instructed to answer only questions about the app and not
+  to invent live transit information.
+
+### Prompt
+The prompt lives in its own versioned file: `backend/app/prompts/chatbot_v1.txt`.
+Prompts are never edited in place once released. To change the prompt, add a new
+file (for example `chatbot_v2.txt`) and update `PROMPT_VERSION` in `llm.py`, so
+the history of prompt changes stays visible in git.
+
+### API key
+- **GitHub Actions:** the key is stored as the repository secret
+  `ANTHROPIC_API_KEY` (Settings → Secrets and variables → Actions) and passed to
+  the workflow in `.github/workflows/`.
+- **Local development:** add `ANTHROPIC_API_KEY=your-key` to your own `.env`
+  file (see `.env.example`). `.env` is gitignored, so the key is never committed.
+
+### Tests
+`tests/test_llm.py` mocks the Claude API, so the tests need no key and cost
+nothing. Run them with `python -m pytest`.
