@@ -3,7 +3,7 @@ import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-nat
 import { api } from '../api';
 import Top from '../Top';
 import { colors } from '../theme';
-import AIButton from '../AIButton';
+import AIButton from '../AiButton';
 
 const options = ['Larger Text', 'High Contrast', 'Screen reader', 'Voice Navigation', 'Accessible Routes Only'];
 

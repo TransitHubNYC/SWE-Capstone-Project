@@ -5,7 +5,7 @@ import BottomNav from '../BottomNav';
 import Weather from '../Weather';
 import LeafletMap from '../LeafletMap';
 import { colors } from '../theme';
-import AIButton from '../AIButton';
+import AIButton from '../AiButton';
 
 export default function Stops({ go }) {
   const [stops, setStops] = useState(null);

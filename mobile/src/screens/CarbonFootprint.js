@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import BottomNav from '../BottomNav';
 import { colors } from '../theme';
-import AIButton from '../AIButton';
+import AIButton from '../AiButton';
 
 // Placeholder values from the Figma design; swap for real data from your API later.
 const footprint = { amount: 2.8, unit: 'year', changePercent: -12 };

@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import BottomNav from '../BottomNav';
 import Weather from '../Weather';
 import { colors } from '../theme';
-import AIButton from '../AIButton';
+import AIButton from '../AiButton';
 
 export default function BikeLocations({ go }) {
   return (
