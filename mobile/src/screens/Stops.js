@@ -5,6 +5,7 @@ import BottomNav from '../BottomNav';
 import Weather from '../Weather';
 import LeafletMap from '../LeafletMap';
 import { colors } from '../theme';
+import AIButton from '../AIButton';
 
 export default function Stops({ go }) {
   const [stops, setStops] = useState(null);
@@ -82,6 +83,7 @@ export default function Stops({ go }) {
             ))}
         </View>
       </ScrollView>
+      <AIButton top={215} />
       <BottomNav active="stops" go={go} />
     </View>
   );

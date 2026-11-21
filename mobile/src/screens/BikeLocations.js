@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import BottomNav from '../BottomNav';
 import Weather from '../Weather';
 import { colors } from '../theme';
+import AIButton from '../AIButton';
 
 export default function BikeLocations({ go }) {
   return (
@@ -36,6 +37,7 @@ export default function BikeLocations({ go }) {
         <Text style={s.nearbyStopsText}>Nearby Stops</Text>
       </Pressable>
 
+      <AIButton top={205} />
       <BottomNav active="map" go={go} />
     </View>
   );

@@ -3,6 +3,7 @@ import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-nat
 import { api } from '../api';
 import Top from '../Top';
 import { colors } from '../theme';
+import AIButton from '../AIButton';
 
 const options = ['Larger Text', 'High Contrast', 'Screen reader', 'Voice Navigation', 'Accessible Routes Only'];
 
@@ -20,6 +21,7 @@ export default function Accessibility({ go, session, setSession }) {
   return (
     <ScrollView>
       <Top title="Accessibility" bg={colors.navy} color="#cbe9f5" height={136} onBack={() => go('more')} />
+      <AIButton top={140} />
 
       <View style={s.body}>
         {options.map((label) => (

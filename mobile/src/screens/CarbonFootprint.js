@@ -1,8 +1,9 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import BottomNav from '../BottomNav';
 import { colors } from '../theme';
+import AIButton from '../AIButton';
 
-// placeholder values from the Figma design; swap for real data from your API later.
+// Placeholder values from the Figma design; swap for real data from your API later.
 const footprint = { amount: 2.8, unit: 'year', changePercent: -12 };
 
 export default function CarbonFootprint({ go }) {
@@ -32,6 +33,7 @@ export default function CarbonFootprint({ go }) {
         </View>
       </View>
 
+      <AIButton top={90} />
       <BottomNav active="more" go={go} />
     </View>
   );
