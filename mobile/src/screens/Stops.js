@@ -35,12 +35,16 @@ export default function Stops({ go }) {
     <View style={{ flex: 1 }}>
       <ScrollView>
         <View style={s.header}>
-          <Pressable onPress={() => go('home')}>
+          <Pressable onPress={() => go('home')} accessibilityRole="button" accessibilityLabel="Back to home">
             <Text style={s.title}>{'\u2190'}  Nearby Stops</Text>
           </Pressable>
-          <Text style={s.sub}>From: Current Location</Text>
-          <Text style={s.sub}>To: Times Square, Manhattan</Text>
-          <TextInput style={s.search} placeholder="Search for a route, stop, or location..." placeholderTextColor="#5f7388" />
+          <Text style={s.sub}>
+            <Text style={s.subLabel}>From</Text>: Current Location
+          </Text>
+          <Text style={s.sub}>
+            <Text style={s.subLabel}>To:</Text> Times Square, Manhattan
+          </Text>
+          <TextInput style={s.search} placeholder="Search for a route, stop, or location..." placeholderTextColor="#4f6267" />
         </View>
 
         <View style={s.map}>
@@ -84,17 +88,21 @@ export default function Stops({ go }) {
 }
 
 const s = StyleSheet.create({
-  header: { backgroundColor: colors.navy, paddingTop: 28, paddingHorizontal: 18, paddingBottom: 18 },
-  title: { color: '#cbe9f5', fontSize: 24 },
-  sub: { color: '#cbe9f5', fontSize: 18, marginLeft: 6, marginTop: 2 },
+  header: { backgroundColor: '#2c4262', paddingTop: 28, paddingHorizontal: 18, paddingBottom: 18 },
+  title: { color: '#cbeaf3', fontSize: 24, fontWeight: '700', marginBottom: 6 },
+  sub: { color: '#cbeaf3', fontSize: 20, marginLeft: 6, marginTop: 2 },
+  subLabel: { fontWeight: '700' },
   search: {
-    height: 42, borderRadius: 21, borderWidth: 1, borderColor: '#0b1a2e', marginTop: 14,
-    backgroundColor: colors.sky, paddingHorizontal: 14, fontSize: 16, color: colors.text,
+    height: 42, borderRadius: 30, borderWidth: 1, borderColor: 'rgba(3, 31, 56, 0.1)', marginTop: 16,
+    backgroundColor: '#cbeaf3', paddingHorizontal: 16, fontSize: 16, color: colors.text,
   },
-  map: { height: 340, backgroundColor: colors.sky },
+  map: { height: 420, backgroundColor: '#cbeaf3' },
   mapMsg: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20 },
-  bar: { backgroundColor: '#d4f0c8', paddingVertical: 10, alignItems: 'center', borderWidth: 1, borderColor: '#bcd9b3' },
-  barText: { fontSize: 24, color: colors.text },
+  bar: {
+    height: 50, backgroundColor: '#d3f2ca', alignItems: 'center', justifyContent: 'center',
+    borderWidth: 1, borderColor: 'rgba(3, 31, 56, 0.1)',
+  },
+  barText: { fontSize: 24, fontWeight: '700', color: '#2c4262' },
   row: { padding: 14, borderBottomWidth: 1, borderColor: '#e3e8ee' },
   name: { fontSize: 19, fontWeight: '700', color: colors.text },
   meta: { fontSize: 15, color: '#5f7388', marginTop: 3 },
