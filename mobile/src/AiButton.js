@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text } from 'react-native';
 
 // Floating AI assistant button from the Figma designs (top right, under the header).
 // When it's ready, pass onPress={() => go('ai')} from each screen, or set the default below.
-export default function AiButton({ top = 140, onPress = () => {} }) {
+export default function AIButton({ top = 140, onPress = () => {} }) {
   return (
     <Pressable
       style={[s.button, { top }]}

@@ -4,7 +4,7 @@ import { api } from '../api';
 import BottomNav from '../BottomNav';
 import Weather from '../Weather';
 import { colors } from '../theme';
-import AIButton from '../AIButton';
+import AIButton from '../AiButton';
 
 const tiles = [
   { label: 'Plan a Trip', bg: '#d0e0f8', to: 'plan' },
