@@ -7,7 +7,7 @@ log = logging.getLogger(__name__)
 
 PROMPT_DIR = Path(__file__).parent / "prompts"
 PROMPT_VERSION = "chatbot_v1"
-MODEL = "claude-sonnet-5-5"
+MODEL = "claude-haiku-5-5"
 MAX_MESSAGE_CHARS = 1000
 MAX_REPLY_CHARS = 1500
 
