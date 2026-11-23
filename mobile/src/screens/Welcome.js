@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 import { colors } from '../theme';
-import { Button, Notice } from '../ui';
+import { Button, LinkText, Notice } from '../ui';
 
 export default function Welcome({ go, notice }) {
   return (
@@ -30,6 +30,7 @@ export default function Welcome({ go, notice }) {
         <Button title="Get Started" onPress={() => go('signup')} />
         <View style={{ height: 18 }} />
         <Button title="Log In" light onPress={() => go('login')} />
+        <LinkText onPress={() => go('mappreview')}>Preview NYC Map</LinkText>
       </View>
     </View>
   );
