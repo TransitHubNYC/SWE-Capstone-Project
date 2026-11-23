@@ -5,6 +5,7 @@ import BottomNav from '../BottomNav';
 import Weather from '../Weather';
 import { colors } from '../theme';
 import AIButton from '../AiButton';
+import LeafletMap from '../LeafletMap';
 
 const tiles = [
   { label: 'Plan a Trip', bg: '#d0e0f8', to: 'plan' },
@@ -37,8 +38,8 @@ export default function Home({ go, session, setSession }) {
       </View>
 
       <View style={s.map}>
+        <LeafletMap stops={[]} routes={[]} style={{ flex: 1, alignSelf: 'stretch' }} />
         <Weather />
-        <Text style={s.mapText}>MAP</Text>
       </View>
 
       {soon ? <Text style={s.soon}>{soon}</Text> : null}
@@ -72,8 +73,7 @@ const s = StyleSheet.create({
     height: 42, borderRadius: 30, borderWidth: 1, borderColor: 'rgba(3, 31, 56, 0.1)',
     backgroundColor: '#cbeaf3', paddingHorizontal: 16, fontSize: 16, color: colors.text,
   },
-  map: { flex: 1, backgroundColor: '#cbeaf3', alignItems: 'center', justifyContent: 'center' },
-  mapText: { fontSize: 96, color: '#000000' },
+  map: { flex: 1, backgroundColor: '#cbeaf3' },
   soon: { textAlign: 'center', color: colors.text, backgroundColor: '#ffffff', padding: 8 },
   grid: {
     flexDirection: 'row', flexWrap: 'wrap', backgroundColor: '#ffffff', padding: 8,
