@@ -54,7 +54,7 @@ export default function Home({ go, session, setSession }) {
         ))}
       </View>
 
-      <AIButton top={150} />
+      <AIButton top={150} onPress={() => go('ai')} />
       <BottomNav active="home" go={go} />
     </View>
   );

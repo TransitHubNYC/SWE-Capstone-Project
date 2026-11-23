@@ -21,7 +21,7 @@ export default function Accessibility({ go, session, setSession }) {
   return (
     <ScrollView>
       <Top title="Accessibility" bg={colors.navy} color="#cbe9f5" height={136} onBack={() => go('more')} />
-      <AIButton top={140} />
+      <AIButton top={140} onPress={() => go('ai')} />
 
       <View style={s.body}>
         {options.map((label) => (

@@ -4,7 +4,7 @@ import { api } from '../api';
 import BottomNav from '../BottomNav';
 import Top from '../Top';
 import { colors } from '../theme';
-import AIButton from '../AIButton';
+import AIButton from '../AiButton';
 
 export default function More({ go, session, setSession }) {
   const [soon, setSoon] = useState('');
@@ -48,7 +48,7 @@ export default function More({ go, session, setSession }) {
           </Pressable>
         </View>
       </ScrollView>
-      <AIButton top={140} />
+      <AIButton top={140} onPress={() => go('ai')} />
       <BottomNav active="more" go={go} />
     </View>
   );

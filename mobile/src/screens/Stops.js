@@ -83,7 +83,7 @@ export default function Stops({ go }) {
             ))}
         </View>
       </ScrollView>
-      <AIButton top={215} />
+      <AIButton top={215} onPress={() => go('ai')} />
       <BottomNav active="stops" go={go} />
     </View>
   );

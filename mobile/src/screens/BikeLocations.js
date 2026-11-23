@@ -37,7 +37,7 @@ export default function BikeLocations({ go }) {
         <Text style={s.nearbyStopsText}>Nearby Stops</Text>
       </Pressable>
 
-      <AIButton top={205} />
+      <AIButton top={205} onPress={() => go('ai')} />
       <BottomNav active="map" go={go} />
     </View>
   );

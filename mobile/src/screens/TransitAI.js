@@ -1,24 +1,41 @@
 import { useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { api } from '../api';
 import BottomNav from '../BottomNav';
 import { colors } from '../theme';
 
-const initialMessages = [
-  { id: 1, from: 'ai', text: 'Hello. This is TransitHub NY AI assistant. How can I help you?' },
-  { id: 2, from: 'user', text: 'Hello. This message is only for a demo.' },
-];
+const GREETING = { id: 1, from: 'ai', text: 'Hello. This is TransitHub NY AI assistant. How can I help you?' };
+const FALLBACK = "Sorry, the assistant isn't available right now. Please try again in a moment.";
 
-export default function TransitAI({ go }) {
-  const [messages, setMessages] = useState(initialMessages);
+export default function TransitAI({ go, session }) {
+  const [messages, setMessages] = useState([GREETING]);
   const [draft, setDraft] = useState('');
+  const [busy, setBusy] = useState(false);
   const scrollRef = useRef(null);
 
-  function send() {
+  async function send() {
     const text = draft.trim();
-    if (!text) return;
+    if (!text || busy) return;
+    // Earlier turns (without the greeting) go to the backend as history.
+    const history = messages
+      .filter((m) => m.id !== GREETING.id)
+      .map((m) => ({ role: m.from === 'ai' ? 'assistant' : 'user', content: m.text }));
     setMessages((m) => [...m, { id: Date.now(), from: 'user', text }]);
     setDraft('');
-    // TODO: call your AI endpoint here and append the reply with from: 'ai'
+    setBusy(true);
+    let reply = FALLBACK;
+    try {
+      const out = await api('/api/chatbot/', {
+        method: 'POST',
+        body: { message: text, history },
+        token: session && session.token,
+      });
+      if (out && out.reply) reply = out.reply;
+    } catch (e) {
+      // keep the friendly fallback message
+    }
+    setMessages((m) => [...m, { id: Date.now() + 1, from: 'ai', text: reply }]);
+    setBusy(false);
   }
 
   return (
@@ -61,8 +78,10 @@ export default function TransitAI({ go }) {
             style={s.input}
             value={draft}
             onChangeText={setDraft}
-            placeholder="Type your message..."
+            placeholder={busy ? 'Thinking...' : 'Type your message...'}
             placeholderTextColor="#4f6267"
+            maxLength={1000}
+            editable={!busy}
             returnKeyType="send"
             onSubmitEditing={send}
           />

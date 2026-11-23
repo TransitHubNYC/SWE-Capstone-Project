@@ -33,7 +33,7 @@ export default function CarbonFootprint({ go }) {
         </View>
       </View>
 
-      <AIButton top={90} />
+      <AIButton top={90} onPress={() => go('ai')} />
       <BottomNav active="more" go={go} />
     </View>
   );
