@@ -4,7 +4,7 @@
 
 **Team Members:** Caceres, Jainny; Mushorn, Zachary; Quigley, Paul; Samaniego, Jorge; Yalcinkaya, Kevin
 
-**Kanban board:** [TransitHub NYC Project Board](PASTE_PROJECT_BOARD_URL)
+**Kanban board:** [TransitHub NYC Project Board](https://github.com/users/Hexsl/projects/4/views/1)
 
 
 ## Proposal #1 - Work Order Ticketing System
@@ -297,7 +297,6 @@ python -m evals.run_evals
 
 - **Golden set:** 17 cases in `evals/golden_set.json` (in-scope questions, hallucination traps, out-of-scope requests and injection attempts).
 - **Checks and thresholds:** golden set 85%, hallucination 90%, consistency across repeated runs 85% (5 questions, 3 runs each). A fallback reply always counts as a failure. Unit tests use a mocked AI client; only the Eval stage in the pipeline calls the real API.
-- **Latest results:** golden `__%`, hallucination `__%`, consistency `__%`. Run: `PASTE_RUN_URL`
 
 ## Prompt-Injection Risk
 
