@@ -4,7 +4,7 @@
 
 **Team Members:** Caceres, Jainny; Mushorn, Zachary; Quigley, Paul; Samaniego, Jorge; Yalcinkaya, Kevin
 
-**Kanban board:** [TransitHub NYC Project Board](PASTE_PROJECT_BOARD_URL)
+**Kanban board:** [TransitHub NYC Project Board](https://github.com/users/Hexsl/projects/4/views/1)
 
 
 ## Proposal #1 - Work Order Ticketing System
@@ -274,3 +274,45 @@ We are adding a weather API integration so the app can show current conditions a
 4. **YAML indentation error.** While editing the AI-provided file, the `test:` job ended up indented by 3 spaces instead of 2. GitHub could no longer parse the workflow: runs failed instantly with no job output and showed the file path instead of the "CI/CD Pipeline" name. We compared the file against the run where all stages had passed, found the extra space, and fixed it.
 
 **What we found that the AI's first pass missed:** two leftover template workflows (`django.yml` and `python-app.yml`) were running alongside ours. One started failing after we moved `SECRET_KEY` to an environment variable. We noticed runs with unfamiliar names ("Django CI") in the Actions tab and deleted both files, leaving `ci.yml` as the single pipeline.
+
+# Sprint 3: AI Chatbot
+
+The **TransitHubNYC assistant** is a chat screen that answers riders' questions about the app. It calls the Claude API from the Django backend.
+
+## LLM Feature
+
+The app has an AI assistant chat screen that answers riders' questions about the app. The backend calls the Claude API from Python, the prompt lives in its own versioned file (`backend/app/prompts/chatbot_v1.txt`), and the API key is stored in GitHub Secrets.
+
+## Fallback Path
+
+`llm.safe_chat()` never raises because of the AI call. If the call fails, times out (10 s, one retry), the key is missing, or the reply is empty or longer than 1500 characters, it returns a fixed message ("Sorry, the assistant isn't available right now...") with `"fallback": true`, and the endpoint still answers 200. Tests: `tests/test_fallback.py` and `tests/test_chatbot_endpoint.py`.
+
+## Evaluation Suite
+
+Run everything with one command (needs `ANTHROPIC_API_KEY`):
+
+```bash
+python -m evals.run_evals
+```
+
+- **Golden set:** 17 cases in `evals/golden_set.json` (in-scope questions, hallucination traps, out-of-scope requests and injection attempts).
+- **Checks and thresholds:** golden set 85%, hallucination 90%, consistency across repeated runs 85% (5 questions, 3 runs each). A fallback reply always counts as a failure. Unit tests use a mocked AI client; only the Eval stage in the pipeline calls the real API.
+
+## Prompt-Injection Risk
+
+The endpoint accepts a `history` list from the client, so a user can forge earlier `assistant` turns, or type "ignore your instructions" directly, to steer the model. **Sprint 4 fix:** keep the conversation history on the server so the client cannot forge turns, and add more injection cases to the evals.
+
+## Sanity Check
+
+If the provider changed its model tomorrow, the evals would **partly** catch it. Off-topic, invented or inconsistent answers would drop the scores below the thresholds and fail the next pull request. Subtle quality changes would not be caught because the checks are keyword-based, and evals only run on pull requests. The model ID is pinned in `llm.py`, so a change goes through a PR. We plan to add a weekly scheduled Eval run.
+
+## AI-Use Statement (Sprint 3)
+
+**Tools:** Claude (Anthropic) and GitHub Copilot. We used them to review and fix the chatbot pull requests, write the fallback tests, golden set and eval runner, add the Eval stage, debug errors and draft this README.
+
+**What the AI got wrong, and how we fixed it:**
+
+1. **A pull request deleted existing endpoints** (alerts, trips, reports, admin) from `api_more.py`. We found it by comparing the branch to `main` and restored the file.
+2. **The Eval stage crashed** with `'ThinkingBlock' object has no attribute 'text'`. We found it in the CI log, changed `llm.py` to join only text blocks, and added a test.
+3. **`anthropic` was missing from `requirements.txt`.** We added it.
+4. **Some golden cases expected words the app does not use.** We fixed the expectations instead of lowering the thresholds.
