@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { colors } from './src/theme';
 import Welcome from './src/screens/Welcome';
+import MapPreview from './src/screens/MapPreview';
 import SignUp from './src/screens/SignUp';
 import LogIn from './src/screens/LogIn';
 import Home from './src/screens/Home';
@@ -24,13 +25,13 @@ import Emergency from './src/screens/Emergency';
 import TransitAI from './src/screens/TransitAI';
 
 const screens = {
-  welcome: Welcome, signup: SignUp, login: LogIn,
+  welcome: Welcome, mappreview: MapPreview, signup: SignUp, login: LogIn,
   home: Home, stops: Stops, tickets: Tickets, payment: Payment, confirmation: Confirmation,
   plan: PlanTrip, results: Results, updates: Updates, more: More, accessibility: Accessibility,
   history: History, admin: Admin, reports: Reports, createalert: CreateAlert,
   weather: WeatherScreen, emergency: Emergency, ai: TransitAI,
 };
-const publicScreens = ['welcome', 'signup', 'login'];
+const publicScreens = ['welcome', 'mappreview', 'signup', 'login'];
 
 export default function App() {
   const [screen, setScreen] = useState('welcome');
