@@ -417,3 +417,10 @@ class EmergencyAndWeatherApiTests(ApiTestCase):
     def test_bad_coordinates_are_rejected(self):
         self.assertEqual(self.client.get("/api/weather/?lat=abc&lon=1").status_code, 400)
         self.assertEqual(self.client.get("/api/weather/?lat=95&lon=1").status_code, 400)
+
+    def test_chat_skips_thinking_blocks():
+    fake = MagicMock()
+    thinking = MagicMock(spec=["type"])   # a block with no .text attribute
+    fake.messages.create.return_value.content = [thinking, MagicMock(text="Open the Alerts tab.")]
+    with patch.object(llm, "_client", return_value=fake):
+        assert llm.chat("Where are alerts?") == "Open the Alerts tab."

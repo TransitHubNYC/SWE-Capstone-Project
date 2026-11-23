@@ -44,11 +44,12 @@ def chat(user_message: str, history: list[dict] | None = None) -> str:
     messages = list(history or []) + [{"role": "user", "content": user_message}]
     response = _client().messages.create(
         model=MODEL,
-        max_tokens=400,
+        max_tokens=1024,
         system=load_prompt(),
         messages=messages,
     )
-    return response.content[0].text.strip()
+    parts = [b.text for b in response.content if isinstance(getattr(b, "text", None), str)]
+    return "".join(parts).strip()
 
 
 def safe_chat(user_message: str, history: list[dict] | None = None) -> dict:
