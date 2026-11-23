@@ -1,5 +1,5 @@
-from rest_framework.authentication import BaseAuthentication, get_authorization_header
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.authentication import BaseAuthentication, get_authorization_header  # type: ignore[reportMissingImports]
+from rest_framework.exceptions import AuthenticationFailed  # type: ignore[reportMissingImports]
 
 from database import accounts
 from database.db import get_db
