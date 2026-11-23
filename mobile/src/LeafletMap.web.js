@@ -9,7 +9,7 @@ export default function LeafletMap({ stops, routes, style }) {
     <View style={style}>
       {createElement('iframe', {
         srcDoc: html,
-        title: 'Long Island Rail Road map',
+        title: 'Interactive New York City transit map',
         style: { border: 0, width: '100%', height: '100%' },
       })}
     </View>
