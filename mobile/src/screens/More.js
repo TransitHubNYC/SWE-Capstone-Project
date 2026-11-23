@@ -4,6 +4,7 @@ import { api } from '../api';
 import BottomNav from '../BottomNav';
 import Top from '../Top';
 import { colors } from '../theme';
+import AIButton from '../AiButton';
 
 export default function More({ go, session, setSession }) {
   const [soon, setSoon] = useState('');
@@ -27,10 +28,10 @@ export default function More({ go, session, setSession }) {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#cbeaf3' }}>
       <ScrollView>
-        <Top title="More" bg={colors.navy} color="#cbe9f5" height={131} onBack={() => go('home')} />
-        <View style={{ padding: 16, paddingTop: 30 }}>
+        <Top title="More" bg="#2c4262" color="#cbeaf3" height={134} onBack={() => go('home')} />
+        <View style={s.list}>
           {session ? <Text style={s.who}>Signed in as {session.user.display_name}</Text> : null}
           {soon ? <Text style={s.soon}>{soon}</Text> : null}
           {rows.map(([label, to]) => (
@@ -47,15 +48,20 @@ export default function More({ go, session, setSession }) {
           </Pressable>
         </View>
       </ScrollView>
+      <AIButton top={140} onPress={() => go('ai')} />
       <BottomNav active="more" go={go} />
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  row: { backgroundColor: '#ffffff', height: 60, justifyContent: 'center', paddingHorizontal: 14, marginBottom: 32 },
-  logout: { backgroundColor: colors.navy, marginTop: 8 },
-  text: { fontSize: 22, color: colors.text },
+  list: { paddingHorizontal: 23, paddingTop: 40, paddingBottom: 24 },
+  row: {
+    backgroundColor: '#ffffff', height: 61, justifyContent: 'center', paddingHorizontal: 24, marginBottom: 22,
+    borderWidth: 1, borderColor: 'rgba(3, 31, 56, 0.1)', borderRadius: 2,
+  },
+  logout: { backgroundColor: '#2c4262', borderColor: '#031f38', marginTop: 8 },
+  text: { fontSize: 24, color: '#2c4262' },
   who: { textAlign: 'center', fontSize: 16, color: colors.text, marginBottom: 18 },
   soon: { textAlign: 'center', color: colors.text, backgroundColor: '#faf4c0', padding: 8, marginBottom: 20 },
 });
