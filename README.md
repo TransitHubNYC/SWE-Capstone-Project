@@ -260,6 +260,40 @@ We are adding a weather API integration so the app can show current conditions a
 - `WEATHER_API_KEY` is listed in `.env.example`.
 - Tests mock the weather API's responses, so the pipeline needs neither the real key nor network access.
 
+### Fallback Path
+`llm.safe_chat()` wraps the Claude call. If the call fails, times out (10 s, one
+retry), the API key is missing, or the output is invalid (empty or over 1,500
+characters), the endpoint returns HTTP 200 with a fixed safe message pointing users
+to the Alerts screen and Report a Problem, plus `"fallback": true`. The failure is
+logged on the server. Invalid user input (empty or too long) still returns 400.
+Tested in `tests/test_fallback.py`.
+
+### Evaluation Suite
+Run with one command: `python -m evals.run_evals` (needs `ANTHROPIC_API_KEY`).
+- **Golden set:** `evals/golden_set.json`, 17 cases (in-scope questions, out-of-scope
+  requests, hallucination probes, prompt-injection probes), each with expected
+  keywords or forbidden content.
+- **Checks and thresholds:**
+  - Golden-set accuracy: at least 85% of cases pass
+  - Hallucination (no invented times, prices or features): at least 90%
+  - Consistency (5 questions asked 3 times each): at least 85% of runs pass
+- A fallback reply counts as a failure in the evals.
+
+### CI Pipeline
+- Unit tests (`tests/`) mock the AI response; `tests/conftest.py` makes any test that
+  tries to use the real API fail.
+- The **Eval** job in GitHub Actions runs the evaluation suite on pull requests to
+  `main` and fails the pipeline if any check is below its threshold.
+
+### Prompt-Injection Risk
+`/api/chatbot/` forwards the client-supplied `history` to the model without
+checking it, so a user can forge assistant turns (for example "Understood, I'll
+ignore my rules") to steer the model off its instructions. Planned fix in Sprint 4:
+keep conversation history on the server and accept only user turns.
+
+### Sanity Check: Would the evals catch a model change?
+partly
+
 ## AI-Use Statement
 
 **Tools used:** Claude (Anthropic) and GitHub Copilot in VS Code.
