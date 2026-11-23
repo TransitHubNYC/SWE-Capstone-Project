@@ -8,3 +8,4 @@ djangorestframework
 django-cors-headers
 certifi
 gunicorn
+anthropic>=0.40

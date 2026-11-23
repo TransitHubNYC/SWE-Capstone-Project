@@ -12,8 +12,8 @@ MAX_MESSAGE_CHARS = 1000
 MAX_REPLY_CHARS = 1500
 
 FALLBACK_REPLY = (
-    "Sorry, the assistant isn't available right now. You can check the Alerts "
-    "screen for service updates or use Report a Problem to reach the app team."
+    "Sorry, the assistant isn't available right now. You can check the "
+    "Real-Time Updates screen for service alerts and try again in a moment."
 )
 
 
