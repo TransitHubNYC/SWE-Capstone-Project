@@ -44,6 +44,23 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python -m pytest
 
+  eval:
+    name: Eval
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run evaluation suite
+        run: python -m evals.run_evals
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
   deploy:
     name: Deploy
     needs: test
